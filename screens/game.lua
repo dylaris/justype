@@ -1,5 +1,7 @@
 local Game = {}
 
+local GameConfig = require "game_config"
+
 local utf8 = require "utf8"
 local WordLoader = require "word_loader"
 local WordManager = require "word_manager"
@@ -9,7 +11,6 @@ local playerScore = 0
 local playerInput = ""
 local playerTargetWord = nil
 
-local gameActive = false
 local startTime = 0
 local currentTime = 0
 local rawSpeed = 100
@@ -30,23 +31,24 @@ local function playInterrupt(sound)
   end
 end
 
-function Game.enter(wordList_, wordDestroySound_, kbhitSound_)
+function Game.enter()
   playerInput = ""
   playerScore = 0
   playerTargetWord = nil
-  gameActive = true
   startTime = love.timer.getTime()
   rawSpeed = 50
-  WordManager.setWordList(wordList_)
+
+  local wordList = WordLoader.loadFromFile("articles/" .. GameConfig.selectedArticle)
+  WordManager.reset()
+  WordManager.setWordList(wordList)
   WordManager.setYRange(50, 500)
   WordManager.setSpeed(rawSpeed)
   WordManager.setMaxSpawn(4)
 
-  wordDestroySound = wordDestroySound_
-  wordDestroySound:setVolume(0.5)
-
-  kbhitSound = kbhitSound_
-  kbhitSound:setVolume(0.5)
+  wordDestroySound = GameConfig.wordDestroySound
+  wordDestroySound:setVolume(GameConfig.sfxVolume)
+  kbhitSound = GameConfig.kbhitSound
+  kbhitSound:setVolume(GameConfig.sfxVolume)
 end
 
 function Game.textinput(t)
@@ -58,8 +60,6 @@ function Game.textinput(t)
 end
 
 function Game.update(dt)
-  if not gameActive then return end
-
   currentTime = love.timer.getTime() - startTime
 
   local newPlayerTargetWord = WordManager.findMatch(playerInput)
@@ -95,8 +95,6 @@ local function formatTime(seconds)
 end
 
 function Game.draw()
-  if not gameActive then return end
-
   -- dark background
   love.graphics.setBackgroundColor(palette.dark_blue)
 
@@ -149,8 +147,6 @@ function Game.draw()
 end
 
 function Game.keypressed(key)
-  if not gameActive then return end
-
   playOverlap(kbhitSound)
   if key == "backspace" then
     local byteoffset = utf8.offset(playerInput, -1)
@@ -161,14 +157,6 @@ function Game.keypressed(key)
          (key == "u" or key == "U") then
     playerInput = ""
   end
-end
-
-function Game.exit()
-  playerInput = ""
-  playerScore = 0
-  playerTargetWord = nil
-  gameActive = false
-  currentTime = 0
 end
 
 return Game

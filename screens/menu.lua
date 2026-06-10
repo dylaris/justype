@@ -89,7 +89,7 @@ function Menu.draw()
 
   -- bottom help text (centered)
   love.graphics.setColor(palette.gray)
-  local helpText = "W/S/↑/↓ : move   SPACE : select   ESC : back"
+  local helpText = "W/S/↑/↓ : move   A/D/←/→ : adjust   SPACE: select   ESC: back"
   local helpWidth = font:getWidth(helpText)
   love.graphics.print(helpText, w / 2 - helpWidth / 2, h - 40)
 
@@ -110,10 +110,10 @@ function Menu.keypressed(key)
     if selected == "Start Game" then
       return "game"
     elseif selected == "Select Article" then
-      return "article"
+      return "archive"
     elseif selected == "Game Mode" then
       return "mode"
-    elseif selected == "Settings" then
+    elseif selected == "Setting" then
       return "setting"
     elseif selected == "Quit" then
       love.event.quit()

@@ -7,7 +7,7 @@ function WordLoader.loadFromFile(filename)
   if not content then return nil end
 
   for word in content:gmatch("%S+") do
-    local cleaned = word:gsub("[%p]", "")
+    local cleaned = word:gsub("[^a-zA-Z0-9'-]", "")
     if #cleaned > 0 then
       table.insert(words, cleaned:lower())
     end

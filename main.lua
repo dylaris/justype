@@ -1,29 +1,46 @@
 local StateManager = require "state_manager"
+local GameConfig = require "game_config"
 
 local Menu = require "screens.menu"
 local Game = require "screens.game"
+local Settings = require "screens.settings"
+local Archive = require "screens.archive"
 
 local WordLoader = require "word_loader"
 
+local function loadAudioByPrefix(folder, prefix, mode)
+  local files = love.filesystem.getDirectoryItems(folder)
+  for _, filename in ipairs(files) do
+    local nameWithoutExt = filename:match("^(.*)%.([^%.]+)$") or filename
+    if nameWithoutExt == prefix then
+      return love.audio.newSource(folder .. "/" .. filename, mode)
+    end
+  end
+  return nil
+end
+
 function love.load()
-  WORD_DESTROY_SOUND = love.audio.newSource("music/word-destroy.mp3", "static")
-  KBHIT_SOUND = love.audio.newSource("music/kbhit.mp3", "static")
-  BGM = love.audio.newSource("music/nu11 - Melt My Heart.flac", "stream")
+  GameConfig.wordDestroySound = loadAudioByPrefix("assets", "word-destroy", "static")
+  GameConfig.kbhitSound = loadAudioByPrefix("assets", "kbhit", "static")
+  GameConfig.bgm = loadAudioByPrefix("assets", "bgm", "stream")
 
-  BGM:setLooping(true)
-  BGM:setVolume(0.5)
-  BGM:play()
+  GameConfig.bgm:setLooping(true)
+  GameConfig.bgm:setVolume(0.4)
+  GameConfig.bgm:play()
 
-  local font = love.graphics.newFont("fonts/ModernDOS8x16.ttf", 16)
+  GameConfig.wordList = WordLoader.loadFromFile("articles/alice29.txt")
+
+  local font = love.graphics.newFont("assets/font.ttf", 16)
   font:setFilter("nearest", "nearest")
   love.graphics.setFont(font)
 
   love.keyboard.setKeyRepeat(true)
 
-  WORD_LIST = WordLoader.loadFromFile("articles/alice29.txt")
-
   StateManager.register("menu", Menu)
   StateManager.register("game", Game)
+  StateManager.register("settings", Settings)
+  StateManager.register("archive", Archive)
+
   StateManager.switchTo("menu")
 end
 
@@ -41,7 +58,11 @@ function love.keypressed(key)
   else
     local screen_name = StateManager.keypressed(key)
     if screen_name == "game" then
-      StateManager.switchTo("game", WORD_LIST, WORD_DESTROY_SOUND, KBHIT_SOUND)
+      StateManager.switchTo("game")
+    elseif screen_name == "settings" then
+      StateManager.switchTo("settings")
+    elseif screen_name == "archive" then
+      StateManager.switchTo("archive")
     end
   end
 end
