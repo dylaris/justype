@@ -21,13 +21,22 @@ end
 function love.load()
   math.randomseed(love.timer.getTime() * 1000)
 
-  GameConfig.wordDestroySound = loadAudioByPrefix("assets", "word-destroy", "static")
-  GameConfig.kbhitSound = loadAudioByPrefix("assets", "kbhit", "static")
-  GameConfig.bgm = loadAudioByPrefix("assets", "bgm", "stream")
+  GameConfig.wordDestroySound = love.audio.newSource("assets/word-destroy-sound.mp3", "static")
+  GameConfig.kbhitSound = love.audio.newSource("assets/kbhit-sound.mp3", "static")
+  GameConfig.bgm_zen = love.audio.newSource("assets/fassounds-good-night-lofi-cozy-chill-music.mp3", "stream")
+  GameConfig.bgm_arcade = love.audio.newSource("assets/psychronic-fight-for-the-future.mp3", "stream")
 
-  GameConfig.bgm:setLooping(true)
-  GameConfig.bgm:setVolume(0.4)
-  GameConfig.bgm:play()
+  GameConfig.bgm_zen:setLooping(true)
+  GameConfig.bgm_zen:setVolume(0.4)
+
+  GameConfig.bgm_arcade:setLooping(true)
+  GameConfig.bgm_arcade:setVolume(0.4)
+
+  if GameConfig.mode == "Zen" then
+    GameConfig.bgm_zen:play()
+  else
+    GameConfig.bgm_arcade:play()
+  end
 
   local font = love.graphics.newFont("assets/font.ttf", 16)
   font:setFilter("nearest", "nearest")
@@ -44,8 +53,20 @@ function love.load()
   StateManager.switchTo("menu")
 end
 
+local lastMode = GameConfig.mode
+
 function love.update(dt)
   StateManager.update(dt)
+  if GameConfig.mode ~= lastMode then
+    if GameConfig.mode == "Zen" then
+      GameConfig.bgm_arcade:stop()
+      GameConfig.bgm_zen:play()
+    else
+      GameConfig.bgm_zen:stop()
+      GameConfig.bgm_arcade:play()
+    end
+    lastMode = GameConfig.mode
+  end
 end
 
 function love.textinput(t)

@@ -1,7 +1,8 @@
 return {
   wordDestroySound = nil,
   kbhitSound = nil,
-  bgm = nil,
+  bgm_zen = nil,
+  bgm_arcade = nil,
 
   bgmVolume = 0.4,
   sfxVolume = 0.8,

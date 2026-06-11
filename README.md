@@ -1,31 +1,40 @@
 # Justype
 
-A DOS-style typing game made with LÖVE2D. Type moving words before they reach the edge.
+A DOS-style typing game made with LÖVE2D.
+
+## Game Modes
+
+- **Arcade Mode** — Words move from right to left. Type them correctly before they reach the edge. Miss too many and the game ends. Fast-paced and challenging.
+- **Zen Mode** — Type entire articles line by line. No pressure, no penalties. Just focus and type at your own pace.
 
 ## Screenshots
 
-![Screenshot 1](screenshots/gameplay.png)
-*Gameplay — type words before they reach the right edge*
-
-![Screenshot 2](screenshots/menu.png)
-*Main menu with retro DOS aesthetic*
+<div align="center">
+  <img src="screenshots/menu.png" width="30%" />
+  <img src="screenshots/arcade.png" width="30%" />
+  <img src="screenshots/zen.png" width="30%" />
+</div>
 
 ## Controls
 
 - `W/S/↑/↓` — navigate
+- `A/D/←/→` - adjust
 - `SPACE` — select
-- `BACKSPACE` — back
-- `ESC` — return to menu / quit
-- `Ctrl+U` — clear input (in-game)
+- `ESC` — return to menu
+- `Ctrl+U` — clear input (Arcade mode)
+- `BACKSPACE` — delete a character (Arcade and zen mode)
+- `ENTER` — skip current line (Zen mode)
+- `Shift+ENTER` — back to previous line (Zen mode)
 
 ## Credits
 
 - **Bisqwit** — inspiration from WSpeed
-- **nu11** — music "Tower of Dreams"
+- **fassounds** — "Good Night" (Lofi Cozy Chill Music) — Arcade mode BGM
+- **psychronic** — "Fight for the Future" — Zen mode BGM
 - **Project Gutenberg** — public domain texts
 
 ## License
 
 - Code: MIT
-- Music: "Tower of Dreams" by nu11 — all rights reserved. Used without permission (personal project only). Remove upon request.
-- Texts: public domain
+- Music: Royalty-free from Pixabay — free for commercial use, no attribution required
+- Texts: Public Domain
