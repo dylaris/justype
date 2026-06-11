@@ -101,7 +101,13 @@ function Archive.draw()
   love.graphics.setColor(palette.gray)
   local helpText = "W/S/↑/↓ : move   A/D/←/→ : adjust   SPACE: select   ESC: back"
   local helpWidth = love.graphics.getFont():getWidth(helpText)
-  love.graphics.print(helpText, w / 2 - helpWidth / 2, h - 35)
+  love.graphics.print(helpText, w / 2 - helpWidth / 2, h - 40)
+
+  -- version and copyright (bottom right)
+  love.graphics.setColor(palette.darker_blue)
+  local copyrightText = "v1.0  © 2026 dylaris"
+  local copyrightWidth = love.graphics.getFont():getWidth(copyrightText)
+  love.graphics.print(copyrightText, w / 2 - copyrightWidth / 2, h - 25)
 end
 
 function Archive.keypressed(key)

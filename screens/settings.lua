@@ -94,9 +94,11 @@ function Settings.draw()
   local helpWidth = love.graphics.getFont():getWidth(helpText)
   love.graphics.print(helpText, w / 2 - helpWidth / 2, h - 40)
 
-  -- Version number
+  -- version and copyright (bottom right)
   love.graphics.setColor(palette.darker_blue)
-  love.graphics.print("v1.0", w - 50, h - 25)
+  local copyrightText = "v1.0  © 2026 dylaris"
+  local copyrightWidth = love.graphics.getFont():getWidth(copyrightText)
+  love.graphics.print(copyrightText, w / 2 - copyrightWidth / 2, h - 25)
 end
 
 function Settings.keypressed(key)

@@ -5,6 +5,7 @@ local Menu = require "screens.menu"
 local Game = require "screens.game"
 local Settings = require "screens.settings"
 local Archive = require "screens.archive"
+local Mode = require "screens.mode"
 
 local WordLoader = require "word_loader"
 
@@ -40,6 +41,7 @@ function love.load()
   StateManager.register("game", Game)
   StateManager.register("settings", Settings)
   StateManager.register("archive", Archive)
+  StateManager.register("mode", Mode)
 
   StateManager.switchTo("menu")
 end
@@ -63,6 +65,8 @@ function love.keypressed(key)
       StateManager.switchTo("settings")
     elseif screen_name == "archive" then
       StateManager.switchTo("archive")
+    elseif screen_name == "mode" then
+      StateManager.switchTo("mode")
     end
   end
 end

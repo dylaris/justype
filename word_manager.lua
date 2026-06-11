@@ -9,6 +9,8 @@ local spawnInternal = 2
 local lastSpawnTime = 0
 local minY = 50
 local maxY = 550
+local recentWords = {}   -- Track recently spawned words
+local recentLimit = 5    -- Avoid repeating words from the last 5 spawns
 
 function WordManager.setWordList(words)
   wordList = words
@@ -38,8 +40,40 @@ end
 function WordManager.spawnWord(y)
   if #wordList == 0 then return nil end
 
-  local randomIndex = math.random(#wordList)
+  -- Collect available word indices (excluding recent ones)
+  local availableIndices = {}
+  for i, word in ipairs(wordList) do
+    local isRecent = false
+    for _, recent in ipairs(recentWords) do
+      if word == recent then
+        isRecent = true
+        break
+      end
+    end
+    if not isRecent then
+      table.insert(availableIndices, i)
+    end
+  end
+
+  -- If too few words available (less than 20%), clear recent history
+  if #availableIndices < #wordList * 0.2 then
+    recentWords = {}
+    for i = 1, #wordList do
+      table.insert(availableIndices, i)
+    end
+  end
+
+  -- Pick a random word from available indices
+  local randomIndex = availableIndices[math.random(#availableIndices)]
   local wordText = wordList[randomIndex]
+
+  -- Add to recent words list
+  table.insert(recentWords, wordText)
+  if #recentWords > recentLimit then
+    table.remove(recentWords, 1)
+  end
+
+  -- Original word spawning logic
   local wordWidth = love.graphics.getFont():getWidth(wordText)
   y = y or math.random(minY, maxY)
 
@@ -143,12 +177,14 @@ function WordManager.update(dt)
       WordManager.spawnWord(y)
     end
   end
-  return spawned, removed
+  return removed, spawned
 end
 
 function WordManager.reset()
   activeWords = {}
   nextWordId = 1
+  lastSpawnTime = 0
+  recentWords = {}
 end
 
 return WordManager

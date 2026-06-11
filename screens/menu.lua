@@ -93,9 +93,11 @@ function Menu.draw()
   local helpWidth = font:getWidth(helpText)
   love.graphics.print(helpText, w / 2 - helpWidth / 2, h - 40)
 
-  -- version number (bottom right)
+  -- version and copyright (bottom right)
   love.graphics.setColor(palette.darker_blue)
-  love.graphics.print("v1.0", w - 50, h - 25)
+  local copyrightText = "v1.0  © 2026 dylaris"
+  local copyrightWidth = font:getWidth(copyrightText)
+  love.graphics.print(copyrightText, w / 2 - copyrightWidth / 2, h - 25)
 end
 
 function Menu.keypressed(key)
@@ -113,8 +115,8 @@ function Menu.keypressed(key)
       return "archive"
     elseif selected == "Game Mode" then
       return "mode"
-    elseif selected == "Setting" then
-      return "setting"
+    elseif selected == "Settings" then
+      return "settings"
     elseif selected == "Quit" then
       love.event.quit()
     end
