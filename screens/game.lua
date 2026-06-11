@@ -13,8 +13,6 @@ local startTime = 0
 local totalSeconds = 0
 local timeRemaining = 0
 local totalChars = 0
-local wordDestroySound = nil
-local kbhitSound = nil
 local gameActive = true
 local gameEndReason = nil
 
@@ -167,16 +165,6 @@ local function enterArcadeMode()
   totalSeconds = GameConfig.time * 60
   startTime = love.timer.getTime()
   timeRemaining = totalSeconds
-
-  -- Sound setup
-  wordDestroySound = GameConfig.wordDestroySound
-  if wordDestroySound then
-    wordDestroySound:setVolume(GameConfig.sfxVolume)
-  end
-  kbhitSound = GameConfig.kbhitSound
-  if kbhitSound then
-    kbhitSound:setVolume(GameConfig.sfxVolume)
-  end
 end
 
 -- Arcade mode text input
@@ -220,7 +208,7 @@ local function arcadeUpdate(dt)
       playerScore = playerScore + 10
       playerInput = ""
       playerTargetWord = nil
-      playInterrupt(wordDestroySound)
+      playInterrupt(GameConfig.wordDestroySound)
     end
   end
 
@@ -231,7 +219,7 @@ end
 
 -- Arcade mode key pressed
 local function arcadeKeypressed(key)
-  playOverlap(kbhitSound)
+  playOverlap(GameConfig.kbhitSound)
   if key == "backspace" then
     local byteoffset = utf8.offset(playerInput, -1)
     if byteoffset then
@@ -345,12 +333,6 @@ local function enterZenMode()
   totalSeconds = GameConfig.time * 60
   startTime = love.timer.getTime()
   timeRemaining = totalSeconds
-
-  -- Sound setup
-  kbhitSound = GameConfig.kbhitSound
-  if kbhitSound then
-    kbhitSound:setVolume(GameConfig.sfxVolume)
-  end
 end
 
 -- Zen mode text input
@@ -408,7 +390,7 @@ end
 
 -- Zen mode key pressed
 local function zenKeypressed(key)
-  playOverlap(kbhitSound)
+  playOverlap(GameConfig.kbhitSound)
 
   if key == "backspace" then
     if zenError then

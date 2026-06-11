@@ -114,8 +114,10 @@ function Settings.keypressed(key)
       local newVolume = GameConfig.bgmVolume - volumeStep
       if newVolume < minVolume then newVolume = minVolume end
       GameConfig.bgmVolume = newVolume
-      if GameConfig.bgm then
-        GameConfig.bgm:setVolume(GameConfig.bgmVolume)
+      if GameConfig.mode == "Zen" then
+        GameConfig.bgm_zen:setVolume(GameConfig.bgmVolume)
+      else
+        GameConfig.bgm_arcade:setVolume(GameConfig.bgmVolume)
       end
     elseif selectedIndex == 2 then
       -- Decrease SFX volume
@@ -129,8 +131,10 @@ function Settings.keypressed(key)
       local newVolume = GameConfig.bgmVolume + volumeStep
       if newVolume > maxVolume then newVolume = maxVolume end
       GameConfig.bgmVolume = newVolume
-      if GameConfig.bgm then
-        GameConfig.bgm:setVolume(GameConfig.bgmVolume)
+      if GameConfig.mode == "Zen" then
+        GameConfig.bgm_zen:setVolume(GameConfig.bgmVolume)
+      else
+        GameConfig.bgm_arcade:setVolume(GameConfig.bgmVolume)
       end
     elseif selectedIndex == 2 then
       -- Increase SFX volume
@@ -148,7 +152,8 @@ function Settings.keypressed(key)
 end
 
 function Settings.exit()
-  -- Save settings if needed
+  GameConfig.wordDestroySound:setVolume(GameConfig.sfxVolume)
+  GameConfig.kbhitSound:setVolume(GameConfig.sfxVolume)
 end
 
 return Settings
