@@ -8,7 +8,8 @@ return {
 
   selectedArticle = "Alice's Adventures in Wonderland by Lewis Carroll.txt", -- file name (must be available)
 
+  mode = "Arcade",        -- "Arcade", "Zen"
   difficulty = "Normal",  -- "Easy", "Normal", "Hard"
-  gameTime = 2,           -- in minutes
-  gameMissed = 20,        -- missed words
+  time = 2,               -- in minutes
+  missed = 20,            -- missed words
 }

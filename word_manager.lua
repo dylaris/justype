@@ -96,10 +96,10 @@ function WordManager.removeWord(id)
   for i, word in ipairs(activeWords) do
     if word.id == id then
       table.remove(activeWords, i)
-      return true
+      return #word.text
     end
   end
-  return false
+  return 0
 end
 
 function WordManager.removeOffScreenWords()

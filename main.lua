@@ -7,8 +7,6 @@ local Settings = require "screens.settings"
 local Archive = require "screens.archive"
 local Mode = require "screens.mode"
 
-local WordLoader = require "word_loader"
-
 local function loadAudioByPrefix(folder, prefix, mode)
   local files = love.filesystem.getDirectoryItems(folder)
   for _, filename in ipairs(files) do
@@ -21,6 +19,8 @@ local function loadAudioByPrefix(folder, prefix, mode)
 end
 
 function love.load()
+  math.randomseed(love.timer.getTime() * 1000)
+
   GameConfig.wordDestroySound = loadAudioByPrefix("assets", "word-destroy", "static")
   GameConfig.kbhitSound = loadAudioByPrefix("assets", "kbhit", "static")
   GameConfig.bgm = loadAudioByPrefix("assets", "bgm", "stream")
@@ -28,8 +28,6 @@ function love.load()
   GameConfig.bgm:setLooping(true)
   GameConfig.bgm:setVolume(0.4)
   GameConfig.bgm:play()
-
-  GameConfig.wordList = WordLoader.loadFromFile("articles/alice29.txt")
 
   local font = love.graphics.newFont("assets/font.ttf", 16)
   font:setFilter("nearest", "nearest")

@@ -3,16 +3,15 @@ local Mode = {}
 local palette = require "palette"
 local GameConfig = require "game_config"
 
-local menuItems = {"Difficulty", "Time Limit", "Missed Limit"}
+local menuItems = {"Mode", "Difficulty", "Time Limit", "Missed Limit"}
 local selectedIndex = 1
+
+-- Mode options
+local modes = {"Arcade", "Zen"}
+local currentMode = "Arcade"
 
 -- Difficulty options
 local difficulties = {"Easy", "Normal", "Hard"}
-local difficultyValues = {
-  Easy = {maxWords = 3, speed = 40},
-  Normal = {maxWords = 6, speed = 50},
-  Hard = {maxWords = 9, speed = 65},
-}
 local currentDifficulty = "Easy"
 
 -- Time limit options (in minutes)
@@ -31,13 +30,15 @@ function Mode.enter()
   selectedIndex = 1
 
   -- Load current settings
+  currentMode = GameConfig.mode or "Arcade"
+
   currentDifficulty = GameConfig.difficulty or "Easy"
 
-  timeMinutes = GameConfig.gameTime or 2
+  timeMinutes = GameConfig.time or 2
   if timeMinutes < minTime then timeMinutes = minTime end
   if timeMinutes > maxTime then timeMinutes = maxTime end
 
-  missedWords = GameConfig.gameMissed or 20
+  missedWords = GameConfig.missed or 20
   if missedWords < minMissed then missedWords = minMissed end
   if missedWords > maxMissed then missedWords = maxMissed end
 end
@@ -90,16 +91,21 @@ function Mode.draw()
 
     -- Draw value display
     if i == 1 then
+      -- Mode value
+      local valueText = currentMode:sub(1,1):upper() .. currentMode:sub(2)
+      love.graphics.setColor(palette.blue)
+      love.graphics.print(valueText, menuItemX + 300, textY)
+    elseif i == 2 then
       -- Difficulty value
       local valueText = currentDifficulty:sub(1,1):upper() .. currentDifficulty:sub(2)
       love.graphics.setColor(palette.blue)
       love.graphics.print(valueText, menuItemX + 300, textY)
-    elseif i == 2 then
+    elseif i == 3 then
       -- Time limit value (minutes)
       local valueText = string.format("%d min(s)", timeMinutes)
       love.graphics.setColor(palette.blue)
       love.graphics.print(valueText, menuItemX + 300, textY)
-    elseif i == 3 then
+    elseif i == 4 then
       -- Missed limit value
       local valueText = string.format("%d word(s)", missedWords)
       love.graphics.setColor(palette.blue)
@@ -129,6 +135,15 @@ function Mode.keypressed(key)
     if selectedIndex > #menuItems then selectedIndex = 1 end
   elseif key == "a" or key == "left" then
     if selectedIndex == 1 then
+      -- Change mode (previous)
+      local idx = 1
+      for i, m in ipairs(modes) do
+        if m == currentMode then idx = i end
+      end
+      idx = idx - 1
+      if idx < 1 then idx = #modes end
+      currentMode = modes[idx]
+    elseif selectedIndex == 2 then
       -- Change difficulty (previous)
       local idx = 1
       for i, d in ipairs(difficulties) do
@@ -137,19 +152,28 @@ function Mode.keypressed(key)
       idx = idx - 1
       if idx < 1 then idx = #difficulties end
       currentDifficulty = difficulties[idx]
-    elseif selectedIndex == 2 then
+    elseif selectedIndex == 3 then
       -- Decrease time
       timeMinutes = timeMinutes - timeStep
       if timeMinutes < minTime then timeMinutes = minTime end
-      GameConfig.gameTime = timeMinutes
-    elseif selectedIndex == 3 then
+      GameConfig.time = timeMinutes
+    elseif selectedIndex == 4 then
       -- Decrease missed words
       missedWords = missedWords - missedStep
       if missedWords < minMissed then missedWords = minMissed end
-      GameConfig.gameMissed = missedWords
+      GameConfig.missed = missedWords
     end
   elseif key == "d" or key == "right" then
     if selectedIndex == 1 then
+      -- Change mode (next)
+      local idx = 1
+      for i, m in ipairs(modes) do
+        if m == currentMode then idx = i end
+      end
+      idx = idx + 1
+      if idx > #modes then idx = 1 end
+      currentMode = modes[idx]
+    elseif selectedIndex == 2 then
       -- Change difficulty (next)
       local idx = 1
       for i, d in ipairs(difficulties) do
@@ -158,25 +182,26 @@ function Mode.keypressed(key)
       idx = idx + 1
       if idx > #difficulties then idx = 1 end
       currentDifficulty = difficulties[idx]
-    elseif selectedIndex == 2 then
+    elseif selectedIndex == 3 then
       -- Increase time
       timeMinutes = timeMinutes + timeStep
       if timeMinutes > maxTime then timeMinutes = maxTime end
-      GameConfig.gameTime = timeMinutes
-    elseif selectedIndex == 3 then
+      GameConfig.time = timeMinutes
+    elseif selectedIndex == 4 then
       -- Increase missed words
       missedWords = missedWords + missedStep
       if missedWords > maxMissed then missedWords = maxMissed end
-      GameConfig.gameMissed = missedWords
+      GameConfig.missed = missedWords
     end
   end
 end
 
 function Mode.exit()
   -- Save final setting
+  GameConfig.mode = currentMode
   GameConfig.difficulty = currentDifficulty
-  GameConfig.gameTime = timeMinutes
-  GameConfig.gameMissed = missedWords
+  GameConfig.time = timeMinutes
+  GameConfig.missed = missedWords
 end
 
 return Mode
