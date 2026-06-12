@@ -7,47 +7,35 @@ local Settings = require "screens.settings"
 local Archive = require "screens.archive"
 local Mode = require "screens.mode"
 
-local function loadAudioByPrefix(folder, prefix, mode)
-  local files = love.filesystem.getDirectoryItems(folder)
-  for _, filename in ipairs(files) do
-    local nameWithoutExt = filename:match("^(.*)%.([^%.]+)$") or filename
-    if nameWithoutExt == prefix then
-      return love.audio.newSource(folder .. "/" .. filename, mode)
-    end
-  end
-  return nil
+local function setDefaultConfig()
+  GameConfig.wordDestroySoundPath = GameConfig.wordDestroySoundPath or "assets/word-destroy-sound.mp3"
+  GameConfig.kbhitSoundPath = GameConfig.kbhitSoundPath or "assets/kbhit-sound.mp3"
+  GameConfig.zenBgmPath = GameConfig.zenBgmPath or "assets/fassounds-good-night-lofi-cozy-chill-music.mp3"
+  GameConfig.arcadeBgmPath = GameConfig.arcadeBgmPath or "assets/psychronic-fight-for-the-future.mp3"
+  GameConfig.fontPath = GameConfig.fontPath or "assets/font.ttf"
+  GameConfig.version = "v1.1.0"
+  GameConfig.bgmVolume = GameConfig.bgmVolume or 0.4
+  GameConfig.sfxVolume = GameConfig.sfxVolume or 0.8
+  GameConfig.selectedArticle = GameConfig.selectedArticle or "001-the-fox-and-the-grapes.txt"
+  GameConfig.mode = GameConfig.mode or "Arcade"
+  GameConfig.difficulty = GameConfig.difficulty or "Normal"
+  GameConfig.time = GameConfig.time or 2
+  GameConfig.missed = GameConfig.missed or 20
 end
 
 function love.load()
   math.randomseed(love.timer.getTime() * 1000)
 
-  -- Load all assets with fallbacks
-  GameConfig.wordDestroySound = love.audio.newSource(
-    GameConfig.wordDestroySoundPath or "assets/word-destroy-sound.mp3",
-    "static"
-  )
+  setDefaultConfig()
 
-  GameConfig.kbhitSound = love.audio.newSource(
-    GameConfig.kbhitSoundPath or "assets/kbhit-sound.mp3",
-    "static"
-  )
+  GameConfig.wordDestroySound = love.audio.newSource(GameConfig.wordDestroySoundPath, "static")
+  GameConfig.kbhitSound = love.audio.newSource(GameConfig.kbhitSoundPath, "static")
+  GameConfig.zenBgm = love.audio.newSource(GameConfig.zenBgmPath, "stream")
+  GameConfig.zenBgm:setVolume(GameConfig.bgmVolume)
+  GameConfig.arcadeBgm = love.audio.newSource(GameConfig.arcadeBgmPath, "stream")
+  GameConfig.arcadeBgm:setVolume(GameConfig.bgmVolume)
 
-  GameConfig.zenBgm = love.audio.newSource(
-    GameConfig.zenBgmPath or "assets/fassounds-good-night-lofi-cozy-chill-music.mp3",
-    "stream"
-  )
-  GameConfig.zenBgm:setVolume(GameConfig.bgmVolume or 0.4)
-
-  GameConfig.arcadeBgm = love.audio.newSource(
-    GameConfig.arcadeBgmPath or "assets/psychronic-fight-for-the-future.mp3",
-    "stream"
-  )
-  GameConfig.arcadeBgm:setVolume(GameConfig.bgmVolume or 0.4)
-
-  GameConfig.font = love.graphics.newFont(
-    GameConfig.fontPath or "assets/font.ttf",
-    16
-  )
+  GameConfig.font = love.graphics.newFont(GameConfig.fontPath, 16)
   GameConfig.font:setFilter("nearest", "nearest")
   love.graphics.setFont(GameConfig.font)
 

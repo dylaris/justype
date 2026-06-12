@@ -105,7 +105,7 @@ function Archive.draw()
 
   -- version and copyright (bottom right)
   love.graphics.setColor(palette.darker_blue)
-  local copyrightText = "v1.0  © 2026 dylaris"
+  local copyrightText = GameConfig.version .. " © 2026 dylaris"
   local copyrightWidth = love.graphics.getFont():getWidth(copyrightText)
   love.graphics.print(copyrightText, w / 2 - copyrightWidth / 2, h - 25)
 end

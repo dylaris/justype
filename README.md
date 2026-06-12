@@ -7,6 +7,18 @@ A DOS-style typing game made with LÖVE2D.
 - **Arcade Mode** — Words move from right to left. Type them correctly before they reach the edge. Miss too many and the game ends. Fast-paced and challenging.
 - **Zen Mode** — Type entire articles line by line. No pressure, no penalties. Just focus and type at your own pace.
 
+## Configuration
+
+The config file is named `game_config.lua` and is stored in `love.filesystem.getSaveDirectory()`:
+
+- **Windows**: `%APPDATA%\LOVE\justype\`
+- **macOS**: `~/Library/Application Support/LOVE/justype/`
+- **Linux**: `~/.local/share/love/justype/`
+
+To add custom music or assets, place your files in the game directory and use relative paths in the config.
+
+If something goes wrong, simply copy `default_game_config.lua` to restore default settings.
+
 ## Screenshots
 
 <div align="center">

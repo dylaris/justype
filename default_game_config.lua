@@ -8,7 +8,7 @@ return {
   bgmVolume = 0.4,
   sfxVolume = 0.8,
 
-  selectedArticle = "001-the-fox-and-the-grapes.txt", -- file name (must be available)
+  selectedArticle = "001-the-fox-and-the-grapes.txt",
 
   mode = "Arcade",        -- "Arcade", "Zen"
   difficulty = "Normal",  -- "Easy", "Normal", "Hard"

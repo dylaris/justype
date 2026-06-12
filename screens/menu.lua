@@ -96,21 +96,28 @@ function Menu.draw()
 
   -- version and copyright (bottom right)
   love.graphics.setColor(palette.darker_blue)
-  local copyrightText = "v1.0  © 2026 dylaris"
+  local copyrightText = GameConfig.version .. " © 2026 dylaris"
   local copyrightWidth = font:getWidth(copyrightText)
   love.graphics.print(copyrightText, w / 2 - copyrightWidth / 2, h - 25)
 end
 
 local function saveConfig()
   local lines = {
+    "-- set value to nil to use default value",
     "return {",
-    "  bgmVolume = " .. GameConfig.bgmVolume .. ",",
-    "  sfxVolume = " .. GameConfig.sfxVolume .. ",",
+    "  wordDestroySoundPath = \"" .. GameConfig.wordDestroySoundPath .. "\",",
+    "  kbhitSoundPath = \"" .. GameConfig.kbhitSoundPath .. "\",",
+    "  zenBgmPath = \"" .. GameConfig.zenBgmPath .. "\",",
+    "  arcadeBgmPath = \"" .. GameConfig.arcadeBgmPath .. "\",",
+    "  fontPath = \"" .. GameConfig.fontPath .. "\",",
+    "  version = \"" .. GameConfig.version .. "\",",
+    "  bgmVolume = " .. GameConfig.bgmVolume .. ", -- 0 - 1",
+    "  sfxVolume = " .. GameConfig.sfxVolume .. ", -- 0 - 1",
     "  selectedArticle = \"" .. GameConfig.selectedArticle .. "\",",
-    "  mode = \"" .. GameConfig.mode .. "\",",
-    "  difficulty = \"" .. GameConfig.difficulty .. "\",",
-    "  time = " .. GameConfig.time .. ",",
-    "  missed = " .. GameConfig.missed .. ",",
+    "  mode = \"" .. GameConfig.mode .. "\", -- Arcade / Zen",
+    "  difficulty = \"" .. GameConfig.difficulty .. "\", -- Easy / Normal / Hard",
+    "  time = " .. GameConfig.time .. ", -- in minute",
+    "  missed = " .. GameConfig.missed .. ", -- missed words",
     "}"
   }
   love.filesystem.write("game_config.lua", table.concat(lines, "\n"))
