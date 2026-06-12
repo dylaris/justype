@@ -67,7 +67,7 @@ function Menu.draw()
 
   -- config file hint
   local saveDir = love.filesystem.getSaveDirectory()
-  local configPath = saveDir .. "/game_config.lua"
+  local configPath = saveDir .. "/" .. GameConfig.getPath()
   local hintText = "Config File: " .. configPath
   local hintWidth = font:getWidth(hintText)
   love.graphics.setColor(palette.white[1], palette.white[2], palette.white[3], configHintAlpha)
@@ -124,28 +124,6 @@ function Menu.draw()
   love.graphics.print(copyrightText, w / 2 - copyrightWidth / 2, h - 25)
 end
 
-local function saveConfig()
-  local lines = {
-    "-- set value to nil to use default value",
-    "return {",
-    "  wordDestroySoundPath = \"" .. GameConfig.wordDestroySoundPath .. "\",",
-    "  kbhitSoundPath = \"" .. GameConfig.kbhitSoundPath .. "\",",
-    "  zenBgmPath = \"" .. GameConfig.zenBgmPath .. "\",",
-    "  arcadeBgmPath = \"" .. GameConfig.arcadeBgmPath .. "\",",
-    "  fontPath = \"" .. GameConfig.fontPath .. "\",",
-    "  version = \"" .. GameConfig.version .. "\",",
-    "  bgmVolume = " .. GameConfig.bgmVolume .. ", -- 0 - 1",
-    "  sfxVolume = " .. GameConfig.sfxVolume .. ", -- 0 - 1",
-    "  selectedArticle = \"" .. GameConfig.selectedArticle .. "\",",
-    "  mode = \"" .. GameConfig.mode .. "\", -- Arcade / Zen",
-    "  difficulty = \"" .. GameConfig.difficulty .. "\", -- Easy / Normal / Hard",
-    "  time = " .. GameConfig.time .. ", -- in minute",
-    "  missed = " .. GameConfig.missed .. ", -- missed words",
-    "}"
-  }
-  love.filesystem.write("game_config.lua", table.concat(lines, "\n"))
-end
-
 function Menu.keypressed(key)
   if key == "w" or key == "up" then
     selectedIndex = selectedIndex - 1
@@ -164,7 +142,7 @@ function Menu.keypressed(key)
     elseif selected == "Settings" then
       return "settings"
     elseif selected == "Quit" then
-      saveConfig()
+      GameConfig.save()
       love.event.quit()
     end
   end

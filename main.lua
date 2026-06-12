@@ -7,26 +7,8 @@ local Settings = require "screens.settings"
 local Archive = require "screens.archive"
 local Mode = require "screens.mode"
 
-local function setDefaultConfig()
-  GameConfig.wordDestroySoundPath = GameConfig.wordDestroySoundPath or "assets/word-destroy-sound.mp3"
-  GameConfig.kbhitSoundPath = GameConfig.kbhitSoundPath or "assets/kbhit-sound.mp3"
-  GameConfig.zenBgmPath = GameConfig.zenBgmPath or "assets/fassounds-good-night-lofi-cozy-chill-music.mp3"
-  GameConfig.arcadeBgmPath = GameConfig.arcadeBgmPath or "assets/psychronic-fight-for-the-future.mp3"
-  GameConfig.fontPath = GameConfig.fontPath or "assets/font.ttf"
-  GameConfig.version = "v1.1.0"
-  GameConfig.bgmVolume = GameConfig.bgmVolume or 0.4
-  GameConfig.sfxVolume = GameConfig.sfxVolume or 0.8
-  GameConfig.selectedArticle = GameConfig.selectedArticle or "001-the-fox-and-the-grapes.txt"
-  GameConfig.mode = GameConfig.mode or "Arcade"
-  GameConfig.difficulty = GameConfig.difficulty or "Normal"
-  GameConfig.time = GameConfig.time or 2
-  GameConfig.missed = GameConfig.missed or 20
-end
-
 function love.load()
   math.randomseed(love.timer.getTime() * 1000)
-
-  setDefaultConfig()
 
   -- mount current directory if game is 'exe'
   if love.filesystem.isFused() then
