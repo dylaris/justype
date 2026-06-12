@@ -17,7 +17,7 @@ local currentDifficulty = "Easy"
 -- Time limit options (in minutes)
 local timeMinutes = 1
 local minTime = 1
-local maxTime = 20
+local maxTime = 30
 local timeStep = 1
 
 -- Missed limit options

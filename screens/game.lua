@@ -276,15 +276,15 @@ local function arcadeDraw()
 
   -- bottom input area
   love.graphics.setColor(palette.blue)
-  love.graphics.print("→ ", 12, h - 38)
+  love.graphics.print("→ ", 12, h - 32)
   love.graphics.setColor(palette.white)
-  love.graphics.print(playerInput .. "_", 30, h - 38)
+  love.graphics.print(playerInput .. "_", 30, h - 32)
 
   -- input hints
   love.graphics.setColor(palette.gray)
   local hintText = "BACKSPACE: delete   Ctrl+U: clear"
   local hintWidth = love.graphics.getFont():getWidth(hintText)
-  love.graphics.print(hintText, w - hintWidth - 12, h - 38)
+  love.graphics.print(hintText, w - hintWidth - 12, h - 32)
 end
 
 -- Arcade mode game over draw
@@ -516,19 +516,19 @@ local function zenDraw()
 
   -- Bottom input area
   love.graphics.setColor(palette.blue)
-  love.graphics.print("→ ", 12, h - 38)
+  love.graphics.print("→ ", 12, h - 32)
   love.graphics.setColor(palette.white)
   local preview = zenInput .. "_"
   if #preview > 30 then
     preview = "..." .. preview:sub(-27)
   end
-  love.graphics.print(preview, 30, h - 38)
+  love.graphics.print(preview, 30, h - 32)
 
   -- Input hints
   love.graphics.setColor(palette.gray)
   local hintText = "BACKSPACE: delete   ENTER: skip line   Shift+ENTER: prev line"
   local hintWidth = love.graphics.getFont():getWidth(hintText)
-  love.graphics.print(hintText, w - hintWidth - 12, h - 38)
+  love.graphics.print(hintText, w - hintWidth - 12, h - 32)
 end
 
 -- Zen mode game over draw

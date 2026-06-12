@@ -115,15 +115,17 @@ function Settings.keypressed(key)
       if newVolume < minVolume then newVolume = minVolume end
       GameConfig.bgmVolume = newVolume
       if GameConfig.mode == "Zen" then
-        GameConfig.bgm_zen:setVolume(GameConfig.bgmVolume)
+        GameConfig.zenBgm:setVolume(GameConfig.bgmVolume)
       else
-        GameConfig.bgm_arcade:setVolume(GameConfig.bgmVolume)
+        GameConfig.arcadeBgm:setVolume(GameConfig.bgmVolume)
       end
     elseif selectedIndex == 2 then
       -- Decrease SFX volume
       local newVolume = GameConfig.sfxVolume - volumeStep
       if newVolume < minVolume then newVolume = minVolume end
       GameConfig.sfxVolume = newVolume
+      GameConfig.wordDestroySound:setVolume(GameConfig.sfxVolume)
+      GameConfig.kbhitSound:setVolume(GameConfig.sfxVolume)
     end
   elseif key == "d" or key == "right" then
     if selectedIndex == 1 then
@@ -132,28 +134,19 @@ function Settings.keypressed(key)
       if newVolume > maxVolume then newVolume = maxVolume end
       GameConfig.bgmVolume = newVolume
       if GameConfig.mode == "Zen" then
-        GameConfig.bgm_zen:setVolume(GameConfig.bgmVolume)
+        GameConfig.zenBgm:setVolume(GameConfig.bgmVolume)
       else
-        GameConfig.bgm_arcade:setVolume(GameConfig.bgmVolume)
+        GameConfig.arcadeBgm:setVolume(GameConfig.bgmVolume)
       end
     elseif selectedIndex == 2 then
       -- Increase SFX volume
       local newVolume = GameConfig.sfxVolume + volumeStep
       if newVolume > maxVolume then newVolume = maxVolume end
       GameConfig.sfxVolume = newVolume
-    end
-  elseif key == "space" or key == "return" or key == "backspace" then
-    if menuItems[selectedIndex] == "Back" then
-      return "menu"
-    else
-      return "menu"
+      GameConfig.wordDestroySound:setVolume(GameConfig.sfxVolume)
+      GameConfig.kbhitSound:setVolume(GameConfig.sfxVolume)
     end
   end
-end
-
-function Settings.exit()
-  GameConfig.wordDestroySound:setVolume(GameConfig.sfxVolume)
-  GameConfig.kbhitSound:setVolume(GameConfig.sfxVolume)
 end
 
 return Settings

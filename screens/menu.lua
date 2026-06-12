@@ -1,12 +1,13 @@
 local Menu = {}
 
+local GameConfig = require "game_config"
 local palette = require "palette"
 
 local menuItems = {"Start Game", "Select Article", "Game Mode", "Settings", "Quit"}
 local selectedIndex = 1
 
-function Menu.enter()
-  selectedIndex = 1
+function Menu.enter(reset)
+  if reset then selectedIndex = 1 end
 end
 
 local titleArt = {
@@ -100,6 +101,21 @@ function Menu.draw()
   love.graphics.print(copyrightText, w / 2 - copyrightWidth / 2, h - 25)
 end
 
+local function saveConfig()
+  local lines = {
+    "return {",
+    "  bgmVolume = " .. GameConfig.bgmVolume .. ",",
+    "  sfxVolume = " .. GameConfig.sfxVolume .. ",",
+    "  selectedArticle = \"" .. GameConfig.selectedArticle .. "\",",
+    "  mode = \"" .. GameConfig.mode .. "\",",
+    "  difficulty = \"" .. GameConfig.difficulty .. "\",",
+    "  time = " .. GameConfig.time .. ",",
+    "  missed = " .. GameConfig.missed .. ",",
+    "}"
+  }
+  love.filesystem.write("game_config.lua", table.concat(lines, "\n"))
+end
+
 function Menu.keypressed(key)
   if key == "w" or key == "up" then
     selectedIndex = selectedIndex - 1
@@ -118,6 +134,7 @@ function Menu.keypressed(key)
     elseif selected == "Settings" then
       return "settings"
     elseif selected == "Quit" then
+      saveConfig()
       love.event.quit()
     end
   end

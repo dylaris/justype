@@ -6,8 +6,8 @@ local GameConfig = require "game_config"
 local articles = {}
 local selectedIndex = 1
 local scrollOffset = 1
-local visibleCount = 10
-local itemHeight = 35
+local visibleCount = 13
+local itemHeight = 34
 
 function Archive.enter()
   -- Scan articles directory
@@ -115,6 +115,8 @@ function Archive.keypressed(key)
     selectedIndex = selectedIndex - 1
     if selectedIndex < 1 then
       selectedIndex = #articles
+      scrollOffset = #articles - visibleCount + 1
+      if scrollOffset < 1 then scrollOffset = 1 end
     end
     -- Adjust scroll
     if selectedIndex < scrollOffset then
@@ -124,6 +126,7 @@ function Archive.keypressed(key)
     selectedIndex = selectedIndex + 1
     if selectedIndex > #articles then
       selectedIndex = 1
+      scrollOffset = 1
     end
     -- Adjust scroll
     if selectedIndex > scrollOffset + visibleCount - 1 then

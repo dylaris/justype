@@ -21,26 +21,41 @@ end
 function love.load()
   math.randomseed(love.timer.getTime() * 1000)
 
-  GameConfig.wordDestroySound = love.audio.newSource("assets/word-destroy-sound.mp3", "static")
-  GameConfig.kbhitSound = love.audio.newSource("assets/kbhit-sound.mp3", "static")
-  GameConfig.bgm_zen = love.audio.newSource("assets/fassounds-good-night-lofi-cozy-chill-music.mp3", "stream")
-  GameConfig.bgm_arcade = love.audio.newSource("assets/psychronic-fight-for-the-future.mp3", "stream")
+  -- Load all assets with fallbacks
+  GameConfig.wordDestroySound = love.audio.newSource(
+    GameConfig.wordDestroySoundPath or "assets/word-destroy-sound.mp3",
+    "static"
+  )
 
-  GameConfig.bgm_zen:setLooping(true)
-  GameConfig.bgm_zen:setVolume(0.4)
+  GameConfig.kbhitSound = love.audio.newSource(
+    GameConfig.kbhitSoundPath or "assets/kbhit-sound.mp3",
+    "static"
+  )
 
-  GameConfig.bgm_arcade:setLooping(true)
-  GameConfig.bgm_arcade:setVolume(0.4)
+  GameConfig.zenBgm = love.audio.newSource(
+    GameConfig.zenBgmPath or "assets/fassounds-good-night-lofi-cozy-chill-music.mp3",
+    "stream"
+  )
+  GameConfig.zenBgm:setVolume(GameConfig.bgmVolume or 0.4)
+
+  GameConfig.arcadeBgm = love.audio.newSource(
+    GameConfig.arcadeBgmPath or "assets/psychronic-fight-for-the-future.mp3",
+    "stream"
+  )
+  GameConfig.arcadeBgm:setVolume(GameConfig.bgmVolume or 0.4)
+
+  GameConfig.font = love.graphics.newFont(
+    GameConfig.fontPath or "assets/font.ttf",
+    16
+  )
+  GameConfig.font:setFilter("nearest", "nearest")
+  love.graphics.setFont(GameConfig.font)
 
   if GameConfig.mode == "Zen" then
-    GameConfig.bgm_zen:play()
+    GameConfig.zenBgm:play()
   else
-    GameConfig.bgm_arcade:play()
+    GameConfig.arcadeBgm:play()
   end
-
-  local font = love.graphics.newFont("assets/font.ttf", 16)
-  font:setFilter("nearest", "nearest")
-  love.graphics.setFont(font)
 
   love.keyboard.setKeyRepeat(true)
 
@@ -50,7 +65,7 @@ function love.load()
   StateManager.register("archive", Archive)
   StateManager.register("mode", Mode)
 
-  StateManager.switchTo("menu")
+  StateManager.switchTo("menu", true)
 end
 
 local lastMode = GameConfig.mode
@@ -59,11 +74,11 @@ function love.update(dt)
   StateManager.update(dt)
   if GameConfig.mode ~= lastMode then
     if GameConfig.mode == "Zen" then
-      GameConfig.bgm_arcade:stop()
-      GameConfig.bgm_zen:play()
+      GameConfig.arcadeBgm:stop()
+      GameConfig.zenBgm:play()
     else
-      GameConfig.bgm_zen:stop()
-      GameConfig.bgm_arcade:play()
+      GameConfig.zenBgm:stop()
+      GameConfig.arcadeBgm:play()
     end
     lastMode = GameConfig.mode
   end

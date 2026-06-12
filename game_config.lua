@@ -1,13 +1,14 @@
 return {
-  wordDestroySound = nil,
-  kbhitSound = nil,
-  bgm_zen = nil,
-  bgm_arcade = nil,
+  wordDestroySoundPath = nil,
+  kbhitSoundPath = nil,
+  zenBgmPath = nil,
+  arcadeBgmPath = nil,
+  fontPath = nil,
 
   bgmVolume = 0.4,
   sfxVolume = 0.8,
 
-  selectedArticle = "Alice's Adventures in Wonderland by Lewis Carroll.txt", -- file name (must be available)
+  selectedArticle = "001-the-fox-and-the-grapes.txt", -- file name (must be available)
 
   mode = "Arcade",        -- "Arcade", "Zen"
   difficulty = "Normal",  -- "Easy", "Normal", "Hard"
