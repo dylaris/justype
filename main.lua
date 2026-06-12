@@ -28,6 +28,12 @@ function love.load()
 
   setDefaultConfig()
 
+  -- mount current directory if game is 'exe'
+  if love.filesystem.isFused() then
+    local baseDir = love.filesystem.getSourceBaseDirectory()
+    local success = love.filesystem.mount(baseDir, "", true)
+  end
+
   GameConfig.wordDestroySound = love.audio.newSource(GameConfig.wordDestroySoundPath, "static")
   GameConfig.kbhitSound = love.audio.newSource(GameConfig.kbhitSoundPath, "static")
   GameConfig.zenBgm = love.audio.newSource(GameConfig.zenBgmPath, "stream")

@@ -6,8 +6,23 @@ local palette = require "palette"
 local menuItems = {"Start Game", "Select Article", "Game Mode", "Settings", "Quit"}
 local selectedIndex = 1
 
+local configHintAlpha = 0.5
+local configHintDir = 1
+
 function Menu.enter(reset)
   if reset then selectedIndex = 1 end
+end
+
+function Menu.update(dt)
+  -- Breathing effect for config hint
+  configHintAlpha = configHintAlpha + configHintDir * dt * 0.6
+  if configHintAlpha >= 1.0 then
+    configHintAlpha = 1.0
+    configHintDir = -1
+  elseif configHintAlpha <= 0.3 then
+    configHintAlpha = 0.3
+    configHintDir = 1
+  end
 end
 
 local titleArt = {
@@ -49,6 +64,14 @@ function Menu.draw()
   local lineY = startY + titleHeight + 10
   love.graphics.setColor(palette.darker_blue)
   love.graphics.line(w / 2 - 100, lineY, w / 2 + 100, lineY)
+
+  -- config file hint
+  local saveDir = love.filesystem.getSaveDirectory()
+  local configPath = saveDir .. "/game_config.lua"
+  local hintText = "Config File: " .. configPath
+  local hintWidth = font:getWidth(hintText)
+  love.graphics.setColor(palette.white[1], palette.white[2], palette.white[3], configHintAlpha)
+  love.graphics.print(hintText, w / 2 - hintWidth / 2, lineY + 15)
 
   -- draw menu items with borders (centered text)
   local menuStartY = lineY + 30
