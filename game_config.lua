@@ -30,7 +30,7 @@ function GameConfig.ensureDefaults()
   GameConfig.zenBgmPath = GameConfig.zenBgmPath or "assets/fassounds-good-night-lofi-cozy-chill-music.mp3"
   GameConfig.arcadeBgmPath = GameConfig.arcadeBgmPath or "assets/psychronic-fight-for-the-future.mp3"
   GameConfig.fontPath = GameConfig.fontPath or "assets/font.ttf"
-  GameConfig.version = "v1.1.0"
+  GameConfig.version = "v1.2.0"
   GameConfig.bgmVolume = GameConfig.bgmVolume or 0.4
   GameConfig.sfxVolume = GameConfig.sfxVolume or 0.8
   GameConfig.selectedArticle = GameConfig.selectedArticle or "001-the-fox-and-the-grapes.txt"
